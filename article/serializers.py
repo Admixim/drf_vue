@@ -26,3 +26,11 @@ class BookDetailSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 # class ReviewCreateSerialazer(serializers.ModelSerializer):
+
+
+class BookCreateSerializer(serializers.ModelSerializer):
+    """Создание  книги"""
+
+    class Meta:
+        model= Book
+        fields = "__all__"

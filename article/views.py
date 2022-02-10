@@ -2,11 +2,12 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Book
-from .serializers import BookListSerializer, BookDetailSerializer
+from .serializers import BookListSerializer, BookDetailSerializer, BookCreateSerializer
 
 
 class BookListView(APIView):
     """Вывод списка книг"""
+
     def  get(self, request):
         book = Book.objects.all()
         serializer = BookListSerializer(book, many=True)
@@ -15,7 +16,19 @@ class BookListView(APIView):
 
 class BookDetailView(APIView):
     """Вывод информации о  книге"""
+
     def  get(self, request, pk):
         book = Book.objects.get(id = pk)
         serializer = BookDetailSerializer(book)
         return Response(serializer.data)
+
+class BookCreateView(APIView):
+    """Создание- добавление книги"""
+
+    def book(self,request):
+        book = BookCreateSerializer(data=request.data)
+
+        if book.is_valid():
+            book.save()
+
+        return Response(status=201)
