@@ -2,40 +2,36 @@ from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView
+from rest_framework import generics
 from .models import Book, Image
-from .serializers import BookListSerializer, BookDetailSerializer, BookCreateSerializer, ImageCreateSerializer, ImageListSerializer
+from .serializers import BookListSerializer, BookDetailSerializer, BookCreateSerializer, ImageCreateSerializer, \
+    ImageListSerializer
 
 
-class BookListView(generics.GenericAPIView):
+class BookListView(generics.ListAPIView):
     """Вывод списка книг"""
 
-    def get(self, request):
-        book = Book.objects.all()
-        serializer = BookListSerializer(book, many=True)
-        return Response(serializer.data)
+    queryset = Book.objects.all()
+    serializer_class = BookListSerializer
 
 
-class ImageListView(APIView):
+class ImageListView(generics.ListAPIView):
     """ Вывод списка изображений"""
 
-    def get(self, request):
-        image = Image.objects.all()
-        serializer = ImageListSerializer(image, many=True)
-        return Response(serializer.data)
+    queryset = Image.objects.all()
+    serializer_class = ImageListSerializer
 
 
-class BookDetailView(APIView):
+class BookDetailView(generics.RetrieveAPIView):
     """Вывод информации о  книге"""
 
-    def get(self, request, pk):
-        book = Book.objects.get(id=pk)
-        serializer = BookDetailSerializer(book)
-        return Response(serializer.data)
+    queryset = Book.objects.all()
+    serializer_class = BookDetailSerializer
 
 
 class BookCreateView(APIView):
     """Создание- добавление книги"""
+
     def post(self, request):
         book = BookCreateSerializer(data=request.data)
         if book.is_valid():
@@ -46,6 +42,7 @@ class BookCreateView(APIView):
 
 class ImageCreateView(APIView):
     """Добавление изображения  книги"""
+
     def post(self, request):
         image = ImageCreateSerializer(data=request.data)
         if image.is_valid():
