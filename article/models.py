@@ -66,7 +66,6 @@ class Publisher(models.Model):
         verbose_name_plural = 'Издатели'
 
 
-
 class Category(models.Model):
     """Таблица Категорий"""
 
@@ -87,7 +86,8 @@ class Image(models.Model):
                             'Book',
                             related_name='image',
                             on_delete=models.CASCADE,
-                            max_length=255
+                            max_length=255,
+
                         )
     name = models.CharField(
                             max_length=255,
@@ -109,7 +109,6 @@ class Image(models.Model):
     class Meta:
         verbose_name = 'Изображение'
         verbose_name_plural = 'Изображения'
-
 
 
 class Book(models.Model):
